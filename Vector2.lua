@@ -1,7 +1,3 @@
-local map = function(oV, oM, oMx, nM, nMx)
-    return ((oV - oM) / (oMx - oM)) * (nMx - nM) + nM
-end
-
 local vector2MT
 vector2MT = {
     __tostring = function(v)
