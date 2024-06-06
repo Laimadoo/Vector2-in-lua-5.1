@@ -111,7 +111,10 @@ vector2MT = {
                 y = v1.y ^ v2
             }, vector2MT)
         elseif tv1 == "number" and tv2 == "vector2" then
-            return v1 ^ math.sqrt(v2.x ^ 2 + v2.y ^ 2)
+            return setmetatable({
+                x = v2 ^ v1.x,
+                y = v2 ^ v1.y
+            }, vector2MT)
         end
     end,
 
