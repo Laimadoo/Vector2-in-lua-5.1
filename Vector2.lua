@@ -121,6 +121,8 @@ vector2MT = {
         if tv1 == tv2 and tv1 == "vector2" then
             return v1.x == v2.x and v1.y == v2.y
         end
+
+        return false
     end,
 
     __unm = function(v)
@@ -142,21 +144,11 @@ vector2MT = {
         end,
 
         dot = function(v1, v2)
-            local tv1 = type(v1) == "table" and getmetatable(v1) == vector2MT and "vector2" or type(v1)
-            local tv2 = type(v2) == "table" and getmetatable(v2) == vector2MT and "vector2" or type(v2)
-
-            if tv1 == tv2 and tv1 == "vector2" then
-                return v1.x * v2.x + v1.y * v2.y
-            end
+            return v1.x * v2.x + v1.y * v2.y
         end,
 
         cross = function(v1, v2)
-            local tv1 = type(v1) == "table" and getmetatable(v1) == vector2MT and "vector2" or type(v1)
-            local tv2 = type(v2) == "table" and getmetatable(v2) == vector2MT and "vector2" or type(v2)
-
-            if tv1 == tv2 and tv1 == "vector2" then
-                return v1.x * v2.y - v1.y * v2.x
-            end
+            return v1.x * v2.y - v1.y * v2.x
         end,
 
         angle = function(v)
@@ -164,28 +156,91 @@ vector2MT = {
         end,
 
         rotation = function(v1, v2)
-            local tv1 = type(v1) == "table" and getmetatable(v1) == vector2MT and "vector2" or type(v1)
-            local tv2 = type(v2) == "table" and getmetatable(v2) == vector2MT and "vector2" or type(v2)
+            return setmetatable({
+                x = v1.x * math.cos(v2) - v1.y * math.sin(v2),
+                y = v1.x * math.sin(v2) + v1.y * math.cos(v2)
+            }, vector2MT)
+        end,
 
-            if tv1 == tv2 and tv1 == "vector2" then
-                local aR = math.atan2(v2.y, v2.x) - math.atan2(v1.y, v1.x)
-                local l = math.sqrt(v1.x^2 + v1.y^2)
-                local nA = math.atan2(v1.y, v1.x) + aR
-                return setmetatable({
-                    x = l * math.cos(nA),
-                    y = l * math.sin(nA)
-                }, vector2MT)
-            elseif tv1 == "vector2" and tv2 == "number" then
-                return setmetatable({
-                    x = v1.x * math.cos(v2) - v1.y * math.sin(v2),
-                    y = v1.x * math.sin(v2) + v1.y * math.cos(v2)
-                }, vector2MT)
-            end
+        rotationVector2 = function(v1, v2)
+            local aR = math.atan2(v2.y, v2.x) - math.atan2(v1.y, v1.x)
+            local l = math.sqrt(v1.x^2 + v1.y^2)
+            local nA = math.atan2(v1.y, v1.x) + aR
+            return setmetatable({
+                x = l * math.cos(nA),
+                y = l * math.sin(nA)
+            }, vector2MT)
         end,
 
         unpack = function(v)
             return v.x, v.y
-        end
+        end,
+
+        add = function(v1, v2)
+            v1.x = v1.x + v2.x
+            v1.y = v1.y + v2.y
+            return v1
+        end,
+
+        addValue = function(v1, v2)
+            v1.x = v1.x + v2
+            v1.y = v1.y + v2
+            return v1
+        end,
+    
+        sub = function(v1, v2)
+            v1.x = v1.x - v2.x
+            v1.y = v1.y - v2.y
+            return v1
+        end,
+
+        subValue = function(v1, v2)
+            v1.x = v1.x - v2
+            v1.y = v1.y - v2
+            return v1
+        end,
+    
+        mul = function(v1, v2)
+            v1.x = v1.x * v2.x
+            v1.y = v1.y * v2.y
+            return v1
+        end,
+
+        mulValue = function(v1, v2)
+            v1.x = v1.x * v2
+            v1.y = v1.y * v2
+            return v1
+        end,
+    
+        div = function(v1, v2)
+            v1.x = v1.x / v2.x
+            v1.y = v1.y / v2.y
+            return v1
+        end,
+
+        divValue = function(v1, v2)
+            v1.x = v1.x / v2
+            v1.y = v1.y / v2
+            return v1
+        end,
+    
+        pow = function(v1, v2)
+            v1.x = v1.x ^ v2
+            v1.y = v1.y ^ v2
+            return v1
+        end,
+
+        powVector2 = function(v1, v2)
+            v1.x = v1.x ^ v2.x
+            v1.y = v1.y ^ v2.y
+            return v1
+        end,
+    
+        unm = function(v)
+            v.x = -v.x
+            v.y = -v.y
+            return v
+        end,
 
     }
 }
